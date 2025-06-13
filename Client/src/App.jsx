@@ -3,11 +3,13 @@ import "../node_modules/bootstrap/dist/js/bootstrap.min.js";
 import "./App.css";
 import "./index.css";
 import AddRoom from "./components/room/AddRoom.jsx";
+import ExistingRooms from "./components/room/ExistingRooms.jsx";
 
 function App() {
   return (
     <>
       <AddRoom />
+      <ExistingRooms />
     </>
   );
 }
