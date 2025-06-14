@@ -30,11 +30,11 @@ const RoomFilter = ({ data, setFilteredData }) => {
         onChange={handleSelectChange}
       >
         <option value={""}> select a room type to filter... </option>
-        {roomTypes.map((type, index) => {
+        {roomTypes.map((type, index) => (
           <option key={index} value={type}>
             {type}
-          </option>;
-        })}
+          </option>
+        ))}
       </select>
       <button className="btn btn-hotel" type="button" onClick={clearFilter}>
         Clear Filter

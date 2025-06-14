@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { getAllRooms } from "../utils/ApiFunctions";
+import { deleteRoom, getAllRooms } from "../utils/ApiFunctions";
 import { Col } from "react-bootstrap";
 import RoomFilter from "../common/RoomFilter";
 import RoomPaginator from "../common/RoomPaginator";
+import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { FaPlus } from "react-icons/fa6";
 
 const ExistingRooms = () => {
   const [rooms, setRooms] = useState([]);
@@ -11,8 +14,8 @@ const ExistingRooms = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [filteredRooms, setFilteredRooms] = useState([]);
   const [selectedRoomType, _setSelectedRoomType] = useState("");
-  const [_successMessage, _setSuccessMessage] = useState("");
-  const [ErrorMessage, setErrorMessage] = useState("");
+  const [_successMessage, setSuccessMessage] = useState("");
+  const [_errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     fetchRooms();
@@ -45,6 +48,25 @@ const ExistingRooms = () => {
     setCurrentPage(pageNumber);
   };
 
+  const handleDelete = async (roomId) => {
+    try {
+      const result = await deleteRoom(roomId);
+      if (result === "") {
+        setSuccessMessage(`Room No ${roomId} was delete`);
+        fetchRooms();
+      } else {
+        console.error(`Error deleting room: ${result.message}`);
+      }
+    } catch (error) {
+      setErrorMessage(error.message);
+    }
+
+    setTimeout(() => {
+      setSuccessMessage("");
+      setErrorMessage("");
+    }, 3000);
+  };
+
   const caculateTotalPages = (filteredRooms, roomsPerPage, rooms) => {
     const totalRooms =
       filteredRooms.length > 0 ? filteredRooms.length : rooms.length;
@@ -65,11 +87,15 @@ const ExistingRooms = () => {
             <section className="mt-5 mb-5 container">
               <div className="d-flex justify-content-center mb-3 mt-5">
                 <h2>Existing</h2>
+
+                <Link to={"add-room"}>
+                  <FaPlus /> Add Room
+                </Link>
               </div>
               <Col md={6} className="mb-3 mb-md-0">
                 <RoomFilter data={rooms} setFilteredData={setFilteredRooms} />
               </Col>
-              <table className="table table-hordered table-hover">
+              <table className="table table-bordered table-hover">
                 <thead>
                   <tr className="text-center">
                     <th>ID</th>
@@ -85,9 +111,30 @@ const ExistingRooms = () => {
                       <td>{room.id}</td>
                       <td>{room.roomType}</td>
                       <td>{room.roomPrice}</td>
-                      <td>
-                        <button>View / Edit</button>
-                        <button>Delete</button>
+                      <td className="d-flex gap-2 justify-content-center">
+                        <Link
+                          to={`/edit-room/${room.id}`}
+                          className="btn btn-info btn-sm"
+                        >
+                          <FaEye className="me-1" />
+                          View
+                        </Link>
+
+                        <Link
+                          to={`/edit-room/${room.id}`}
+                          className="btn btn-warning btn-sm"
+                        >
+                          <FaEdit className="me-1" />
+                          Edit
+                        </Link>
+
+                        <button
+                          className="btn btn-danger btn-sm"
+                          onClick={() => handleDelete(room.id)}
+                        >
+                          <FaTrashAlt className="me-1" />
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   ))}
