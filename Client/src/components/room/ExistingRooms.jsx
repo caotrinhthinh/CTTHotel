@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { deleteRoom, getAllRooms } from "../utils/ApiFunctions";
-import { Col } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import RoomFilter from "../common/RoomFilter";
 import RoomPaginator from "../common/RoomPaginator";
 import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
@@ -85,16 +85,23 @@ const ExistingRooms = () => {
         ) : (
           <>
             <section className="mt-5 mb-5 container">
-              <div className="d-flex justify-content-center mb-3 mt-5">
-                <h2>Existing</h2>
-
-                <Link to={"add-room"}>
-                  <FaPlus /> Add Room
-                </Link>
+              <div className="d-flex justify-content-between align-items-center mb-4 mt-5 px-3">
+                <h2 className="fw-bold m-0">Existing Rooms</h2>
               </div>
-              <Col md={6} className="mb-3 mb-md-0">
-                <RoomFilter data={rooms} setFilteredData={setFilteredRooms} />
-              </Col>
+              <Row className="align-items-center mb-4">
+                <Col md={6} className="mb-3 mb-md-0">
+                  <RoomFilter data={rooms} setFilteredData={setFilteredRooms} />
+                </Col>
+                <Col md={6} className="text-md-end text-center">
+                  <Link
+                    to="/add-room"
+                    className="btn btn-success d-inline-flex align-items-center gap-2 px-3 py-2 rounded-3"
+                  >
+                    <FaPlus />
+                    Add Room
+                  </Link>
+                </Col>
+              </Row>
               <table className="table table-bordered table-hover">
                 <thead>
                   <tr className="text-center">

@@ -162,7 +162,11 @@ const EditRoom = () => {
                     src={imagePreview}
                     alt="Preview Room"
                     className="img-fluid rounded-3 mt-3 border shadow-sm"
-                    style={{ maxHeight: "300px", objectFit: "cover" }}
+                    style={{
+                      width: "70%",
+                      height: "200px",
+                      objectFit: "cover",
+                    }}
                   />
                 )}
               </div>

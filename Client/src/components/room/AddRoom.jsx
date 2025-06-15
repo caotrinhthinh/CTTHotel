@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { addRoom } from "../utils/ApiFunctions";
 import RoomTypeSelector from "../common/RoomTypeSelector";
+import { Link } from "react-router-dom";
 
 const AddRoom = () => {
   const [newRoom, setNewRoom] = useState({
@@ -127,11 +128,17 @@ const AddRoom = () => {
                 </div>
 
                 {/* Submit Button */}
-                <div className="d-grid">
+                <div className="d-flex justify-content-between mt-4 gap-3">
+                  <Link
+                    to="/existing-rooms"
+                    className="btn btn-outline-info px-4 py-2 rounded-3"
+                  >
+                    Back
+                  </Link>
                   <button
                     type="submit"
-                    className="btn btn-primary btn-lg rounded-3"
-                    onSubmit={handleSubmit}
+                    className="btn btn-primary px-4 py-2 rounded-3"
+                    onClick={handleSubmit}
                     disabled={!newRoom.roomType || !newRoom.roomPrice}
                   >
                     Save Room
