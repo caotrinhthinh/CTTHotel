@@ -5,6 +5,7 @@ import java.util.Base64;
 import java.util.List;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -23,8 +24,8 @@ public class RoomResponse {
         this.roomType = roomType;
     }
 
-    public RoomResponse(List<BookingResponse> bookings, Long id, boolean isBooked, byte[] photoBytes, BigDecimal roomPrice, String roomType) {
-        this.bookings = bookings;
+    public RoomResponse(Long id, String roomType, BigDecimal roomPrice, boolean isBooked, byte[] photoBytes) {
+        // this.bookings = bookings;
         this.id = id;
         this.isBooked = isBooked;
         this.photo = photoBytes != null ? Base64.getEncoder().encodeToString(photoBytes) : null;

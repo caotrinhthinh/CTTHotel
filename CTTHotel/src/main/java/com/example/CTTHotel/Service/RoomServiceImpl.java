@@ -12,6 +12,7 @@ import javax.sql.rowset.serial.SerialBlob;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.CTTHotel.Exception.InternalServerException;
 import com.example.CTTHotel.Exception.ResourceNotFoundException;
 import com.example.CTTHotel.Model.Room;
 import com.example.CTTHotel.Repository.RoomRepository;
@@ -62,4 +63,38 @@ public class RoomServiceImpl implements IRoomService {
         return null;
     }
 
+    @Override
+    public void deleteRoom(Long roomId) {
+        Optional<Room> theRoom = roomRepository.findById(roomId);
+
+        if(!theRoom.isEmpty()) {
+            roomRepository.deleteById(roomId);
+        }
+    }
+
+    @Override
+    public Room getRoomById(Long roomId) {
+        return roomRepository.findById(roomId)
+            .orElseThrow(() -> new ResourceNotFoundException("Room not found with ID: " + roomId));
+    }
+
+    @Override
+    public Room updateRoom(Long roomId, String roomType, BigDecimal roomPrice, MultipartFile photo) {
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new ResourceNotFoundException("Room not found"));
+
+        if(roomType != null) room.setRoomType(roomType);
+        if(roomPrice != null) room.setRoomPrice(roomPrice);
+
+        try {
+            if (photo != null && !photo.isEmpty()) {
+                byte[] photoBytes = photo.getBytes();
+                Blob photoBlob = new SerialBlob(photoBytes);
+                room.setPhoto(photoBlob);
+            }
+        } catch (IOException | SQLException e) {
+            throw new InternalServerException("Failed to update room photo");
+        }
+
+        return roomRepository.save(room);
+    }
 }
