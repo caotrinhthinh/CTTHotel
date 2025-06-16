@@ -10,6 +10,7 @@ import AddRoom from "./components/room/AddRoom.jsx";
 import NavBar from "./components/layout/NavBar.jsx";
 import Footer from "./components/layout/Footer.jsx";
 import RoomListing from "./components/room/RoomListing.jsx";
+import RoomCard from "./components/room/RoomCard.jsx";
 
 function App() {
   return (
